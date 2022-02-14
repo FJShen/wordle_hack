@@ -48,19 +48,18 @@ class WordGuessClues {
 
         case 'B' =>
           must_not_exist_letters.add(letter)
+          letter_status_array(idx).asInstanceOf[UndeterminedLetter].prohimited_letter_table.add(letter)
 
         case _ =>
       }
     }
 
-    //if one of the DeterminedLetters are marked black (B) at another location, 
+    //if one of the must_exist_letters are marked black (B) at another location, 
     //remove it from the must_not_exist_letters set
-    letter_status_array.foreach{
-      case DeterminedLetter(c) => 
-        if(guess.contains(c)){
-          must_not_exist_letters.remove(c)
-        }
-      case _ =>
+    must_exist_letters.foreach{x =>
+      if(must_not_exist_letters.contains(x)){
+        must_not_exist_letters.remove(x)
+      }  
     }
     
   }
