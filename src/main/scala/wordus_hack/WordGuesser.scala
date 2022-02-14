@@ -24,5 +24,7 @@ object WordGuesser {
         "Y"
       case _ => "B"
     }
+
+    result.mkString
   }
 }
