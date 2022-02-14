@@ -1,6 +1,6 @@
-package wordus_hack
+package wordle_hack
 
-import scala.collection.mutable.{HashSet, Seq}
+import scala.collection.mutable
 
 sealed trait LetterStatus
 
@@ -13,16 +13,17 @@ case class DeterminedLetter (
 }
 
 case class UndeterminedLetter(
-  prohimited_letter_table : HashSet[Char]
+  prohimited_letter_table : mutable.HashSet[Char]
 ) extends LetterStatus
 
-class WordGuessClues {
-  val letter_status_array : Seq[LetterStatus] = Seq.fill(5)(
-    new UndeterminedLetter(new HashSet[Char])
-  )
-  val must_exist_letters = HashSet[Char]()
-  val must_not_exist_letters = HashSet[Char]()
-  val banned_words = HashSet[String]()
+class WordGuessClues (
+  val letter_status_array : mutable.Seq[LetterStatus] = mutable.Seq.fill(5)(
+    new UndeterminedLetter(new mutable.HashSet[Char])),
+  val must_exist_letters : mutable.HashSet[Char] = mutable.HashSet[Char](),
+  val must_not_exist_letters : mutable.HashSet[Char] = mutable.HashSet[Char](),
+  val banned_words : mutable.HashSet[String] = mutable.HashSet[String]()
+  ){
+
 
   def update_clues(guess: String, feedback: String) = {
     assert(feedback.length == 5)

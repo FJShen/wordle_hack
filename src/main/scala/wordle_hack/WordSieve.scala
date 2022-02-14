@@ -1,4 +1,4 @@
-package wordus_hack
+package wordle_hack
 
 import scala.util.matching._
 

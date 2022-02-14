@@ -1,4 +1,4 @@
-package wordus_hack
+package wordle_hack
 
 import scala.io.{Source, StdIn}
 import scala.util.matching._
@@ -9,7 +9,7 @@ import scala.collection.mutable.{HashSet, Seq}
 
 object main extends App {
 
-  WordusHack.run
+  WordleHack.run
 
   /*val letter_status_array: Seq[LetterStatus] = Seq.fill(5)(new UndeterminedLetter(new HashSet[Char]))
   val must_exist_letters = HashSet[Char]()
