@@ -2,6 +2,7 @@ package wordle_hack
 
 import scala.collection.mutable
 import scala.math._
+import scala.collection.parallel.CollectionConverters._
 
 sealed case class CandidateWord (
   val word: String,
@@ -18,7 +19,7 @@ object WordGuesser {
 
   def pick_best_candidate(candidate_list: Seq[String]): String = {
     //for each candidate calculate a score
-    val score_list = candidate_list.map{guess => 
+    val score_list = candidate_list.par.map{guess => 
       val entropy = calculate_entropy_score(guess, candidate_list)
       CandidateWord(guess, entropy)
     }
