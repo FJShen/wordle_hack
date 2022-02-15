@@ -28,7 +28,7 @@ object WordleHack {
       println(s"candidate list size: ${candidate_list.size}")
 
       //generate a guess
-      val guess = if(num_of_trial ==1) "tares" else WordGuesser.pick_best_candidate(candidate_list)
+      val guess = WordGuesser.pick_best_candidate(candidate_list)
       //val guess = generate_guess(candidate_list)
       println(s"guess: $guess")
 

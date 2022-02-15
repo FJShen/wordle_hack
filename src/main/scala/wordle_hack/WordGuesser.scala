@@ -26,6 +26,7 @@ object WordGuesser {
     //pick the highest-scoring candidate
     val best = score_list.max
     best.word
+
   }
 
   def calculate_entropy_score(guess: String, candidate_list: Seq[String]): Double = {
@@ -57,18 +58,20 @@ object WordGuesser {
 
   //reference to Lynn's implementation (https://github.com/lynn/hello-wordl)
   def generate_clue(guess: String, target: String): String = {
-    assert(guess.length == 5)
-    assert(target.length == 5)
+    //assert(guess.length == 5)
+    //assert(target.length == 5)
 
     val elusive = new mutable.HashSet[Char]()
 
-    target.zip(guess).foreach{
+    val zipped_pair = target zip guess
+
+    zipped_pair.foreach{
       case (t,g) if (t!=g) => 
         elusive.add(t)
       case _ =>
     }
 
-    val result = target.zip(guess).map{ 
+    val result = zipped_pair.map{ 
         case (t,g) if (t == g) => "G"
         case (t,g) if (t != g && elusive.contains(g)) => 
           elusive.remove(g)
