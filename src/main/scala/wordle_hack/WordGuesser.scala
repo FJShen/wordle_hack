@@ -19,6 +19,7 @@ object WordGuesser {
 
   def pick_best_candidate(candidate_list: Seq[String]): String = {
     //for each candidate calculate a score
+    //this is the hotspot therefore parallelize it
     val score_list = candidate_list.par.map{guess => 
       val entropy = calculate_entropy_score(guess, candidate_list)
       CandidateWord(guess, entropy)

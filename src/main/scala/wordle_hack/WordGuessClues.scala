@@ -26,41 +26,45 @@ class WordGuessClues (
 
 
   def update_clues(guess: String, feedback: String) = {
-    assert(feedback.length == 5)
-    assert(guess.length == 5)
 
-    if(feedback == "XXXXX"){
+    if(feedback contains "X"){
       banned_words.add(guess)
     }
 
-    for(idx <- 0 until 5){
-      val c = feedback.charAt(idx)
-      val letter = guess.charAt(idx)
+    else{
+      assert(feedback.length == 5)
+      assert(guess.length == 5)
 
-      c match {
-        case 'G' => 
-          letter_status_array(idx) = new DeterminedLetter(letter)
-          must_exist_letters.add(letter)
+      for(idx <- 0 until 5){
+        val c = feedback.charAt(idx)
+        val letter = guess.charAt(idx)
 
-        case 'Y' =>
-          assert(letter_status_array(idx).isInstanceOf[UndeterminedLetter])
-          letter_status_array(idx).asInstanceOf[UndeterminedLetter].prohimited_letter_table.add(letter)
-          must_exist_letters.add(letter)
+        c match {
+          case 'G' => 
+            letter_status_array(idx) = new DeterminedLetter(letter)
+            must_exist_letters.add(letter)
 
-        case 'B' =>
-          must_not_exist_letters.add(letter)
-          letter_status_array(idx).asInstanceOf[UndeterminedLetter].prohimited_letter_table.add(letter)
+          case 'Y' =>
+            assert(letter_status_array(idx).isInstanceOf[UndeterminedLetter])
+            letter_status_array(idx).asInstanceOf[UndeterminedLetter].prohimited_letter_table.add(letter)
+            must_exist_letters.add(letter)
 
-        case _ =>
+          case 'B' =>
+            must_not_exist_letters.add(letter)
+            letter_status_array(idx).asInstanceOf[UndeterminedLetter].prohimited_letter_table.add(letter)
+
+          case _ =>
+        }
       }
-    }
 
-    //if one of the must_exist_letters are marked black (B) at another location, 
-    //remove it from the must_not_exist_letters set
-    must_exist_letters.foreach{x =>
-      if(must_not_exist_letters.contains(x)){
-        must_not_exist_letters.remove(x)
-      }  
+      //if one of the must_exist_letters are marked black (B) at another location, 
+      //remove it from the must_not_exist_letters set
+      must_exist_letters.foreach{x =>
+        if(must_not_exist_letters.contains(x)){
+          must_not_exist_letters.remove(x)
+        }  
+      }
+
     }
     
   }
