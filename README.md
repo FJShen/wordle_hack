@@ -1,4 +1,11 @@
 # wordle_hack, a solver for the popular game WORDLE.
+## Download
+This repo includes a git sub-module located under  **dictionary/**. Simply using ```git clone git@github.com:FJShen/wordle_hack.git``` does not download the submodule. 
+
+In order to download the submodule along with my repo, use *--recurse-submodules* like this: ```git clone --recurse-submodules git@github.com:FJShen/wordle_hack.git```
+
+If you have already cloned my repo and the **dictionary/** directory is empty, it means the submodule is not cloned. In that case run: ```git submodule update --init --recursive```  in the root directory of my project. 
+
 ## How to run
 - Have JVM and sbt installed on your machine.  
 - Enter the directory and type ```sbt run```
