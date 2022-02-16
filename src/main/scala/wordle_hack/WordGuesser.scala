@@ -20,7 +20,7 @@ object WordGuesser {
   def pick_best_candidate(candidate_list: Seq[String]): String = {
     //for each candidate calculate a score
     //this is the hotspot therefore parallelize it
-    val score_list = candidate_list.map{guess => 
+    val score_list = candidate_list.par.map{guess => 
       val entropy = calculate_entropy_score(guess, candidate_list)
       CandidateWord(guess, entropy)
     }
@@ -65,31 +65,40 @@ object WordGuesser {
 
     val elusive = new mutable.HashSet[Char]()
 
-    var result = new Array[Char](5)
-
     for(idx <- 0 until 5){
       if(target.charAt(idx) != guess.charAt(idx)){
         elusive.add(target.charAt(idx))
       }
     }
 
+    //use lookup table to get pre-assembled string
+    //to optimize for speed
+    var table_index=0
+    var base = 3*3*3*3
+
     for(idx <- 0 until 5){
       if(target.charAt(idx) == guess.charAt(idx)){
-        result(idx) = 'G'
+        table_index = table_index + base * 0
       }
       else if(elusive.contains(guess.charAt(idx))){
-        result(idx) = 'Y'
         elusive.remove(guess.charAt(idx))
+        table_index = table_index + base * 1
       }
       else{
-        result(idx) = 'B'
+        table_index = table_index + base * 2
       }
+      base = base / 3
     }
 
-    result.mkString
+    val looked_up_string = ClueLUT.get_clue_from(table_index)
+
+    looked_up_string
   }
 }
 
+//a look-up table for all possible clues
+//this is a performance optimization to 
+//reduce the execution time of generate_clue
 object ClueLUT{
 
   val table = new Array[String](3*3*3*3*3)
