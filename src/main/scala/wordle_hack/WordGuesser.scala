@@ -20,7 +20,7 @@ object WordGuesser {
   def pick_best_candidate(candidate_list: Seq[String]): String = {
     //for each candidate calculate a score
     //this is the hotspot therefore parallelize it
-    val score_list = candidate_list.par.map{guess => 
+    val score_list = candidate_list.map{guess => 
       val entropy = calculate_entropy_score(guess, candidate_list)
       CandidateWord(guess, entropy)
     }
@@ -65,23 +65,51 @@ object WordGuesser {
 
     val elusive = new mutable.HashSet[Char]()
 
-    val zipped_pair = target zip guess
+    var result = new Array[Char](5)
 
-    zipped_pair.foreach{
-      case (t,g) if (t!=g) => 
-        elusive.add(t)
-      case _ =>
+    for(idx <- 0 until 5){
+      if(target.charAt(idx) != guess.charAt(idx)){
+        elusive.add(target.charAt(idx))
+      }
     }
 
-    val result = zipped_pair.map{ 
-        case (t,g) if (t == g) => "G"
-        case (t,g) if (t != g && elusive.contains(g)) => 
-          elusive.remove(g)
-          "Y"
-        case _ => "B"
-      
+    for(idx <- 0 until 5){
+      if(target.charAt(idx) == guess.charAt(idx)){
+        result(idx) = 'G'
+      }
+      else if(elusive.contains(guess.charAt(idx))){
+        result(idx) = 'Y'
+        elusive.remove(guess.charAt(idx))
+      }
+      else{
+        result(idx) = 'B'
+      }
     }
 
     result.mkString
+  }
+}
+
+object ClueLUT{
+
+  val table = new Array[String](3*3*3*3*3)
+
+  //G=0, Y=1, B=2
+  val char_set = Seq('G', 'Y', 'B');
+
+  var count=0
+  for(a <- char_set;
+      b <- char_set;
+      c <- char_set;
+      d <- char_set;
+      e <- char_set){
+        table(count) = Seq(a,b,c,d,e).mkString
+        count = count + 1
+      }
+
+  def get_clue_from(idx: Int) : String = {
+    assert(idx < 3*3*3*3*3)
+    assert(idx>=0)
+    table(idx)
   }
 }
