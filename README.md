@@ -10,6 +10,8 @@ If you have already cloned my repo and the **dictionary/** directory is empty, i
 - Have JVM and sbt installed on your machine.  
 - Enter the directory and type ```sbt run```
 - Follow the instructions
+- ![image](https://user-images.githubusercontent.com/50934207/162050636-e31951d5-d0a0-44df-8c31-824209dbc985.png)
+
 ## Dictionaries
 More than one dictionaries are bundled with this repo. 
 
