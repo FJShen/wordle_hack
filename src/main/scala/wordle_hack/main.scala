@@ -14,7 +14,7 @@ object main extends App {
 object WordleHack {
 
   //read lines from file
-  val raw_dict_path = "dictionary/enable1.txt"
+  val raw_dict_path = "resources/nyt_allowed.txt"
   val words : Seq[String] = load_5_letter_words(raw_dict_path)
 
   val rnd = Random
